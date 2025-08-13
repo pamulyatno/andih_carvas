@@ -27,8 +27,8 @@ def load_resources():
 model, preprocessor, label_encoder = load_resources()
 
 # --- 2. Judul Aplikasi ---
-st.subheader("Aplikasi Prediksi Risiko Kardiovaskular")
-st.markdown("Masukkan data pasien di bawah ini untuk memprediksi risiko penyakit kardiovaskular.")
+st.subheader("Aplikasi AI Prediksi Risiko Penyakit Kardiovaskular")
+st.markdown("Masukkan data di bawah ini untuk memprediksi risiko penyakit kardiovaskular.")
 
 # --- 3. Formulir Input Data ---
 with st.form("input_form"):
@@ -72,12 +72,11 @@ with st.form("input_form"):
         alco = st.selectbox("Kebiasaan Mengonsumsi Alkohol", options=["Tidak", "Ya"], index=0,label_visibility="collapsed")
         gluc = st.selectbox("Tingkat Glukosa", options=["Normal", "Di Atas Normal", "Sangat di Atas Normal"], index=0,label_visibility="collapsed")
         submitted = st.form_submit_button("Prediksi")
-
-    # Kolom Kategorikal
-    # active = st.selectbox("Aktivitas Fisik", options=["Tidak", "Ya"], index=1)
-
-    # Tombol Submit
-
+    b2kol1,b2kol2 = st.columns(2) 
+    with b2kol1:
+        st.markdown('<div>Total Cholesterol dari alat tes kolesterol strip<br>&nbsp; &nbsp; &#x25BA; &nbsp; <200 Normal<br> &nbsp; &nbsp; &#x25BA; &nbsp;  200-239 Diatas normal<br> &nbsp; &nbsp; &#x25BA; &nbsp;  ≥ 240 Jauh diatas normal<br></div>',unsafe_allow_html=True)
+    with b2kol2:
+        st.markdown('<div>Pengukuran acak dari alat glucotest strip(mg/dL)<br> &nbsp; &nbsp; &#x25BA; &nbsp; <140 Normal<br> &nbsp; &nbsp; &#x25BA; &nbsp;  140–199 Diatas normal<br> &nbsp; &nbsp; &#x25BA; &nbsp;  ≥ 200 Jauh diatas normal</div>', unsafe_allow_html=True)
 # --- 4. Logika Prediksi ---
 if submitted:
     # --- Pra-pemrosesan Data Baru ---
@@ -112,15 +111,17 @@ if submitted:
     prediction_label = label_encoder.inverse_transform([prediction_class_encoded])[0]
 
     # --- 5. Menampilkan Hasil ---
-    st.subheader("Hasil Prediksi")
+    # st.subheader("Hasil Prediksi")
 
     if prediction_label == 1:
-        result_text = "Tinggi"
-        st.error(f"Hasil Prediksi: Risiko **{result_text}**")
-        st.write("Pasien ini diprediksi memiliki risiko tinggi terkena penyakit kardiovaskular.")
+        # result_text = "Tinggi"
+        # st.error(f"Hasil Prediksi: Risiko **{result_text}**")
+        # st.write("Responden ini diprediksi memiliki risiko TINGGI terkena penyakit kardiovaskular.")
+        st.error(f"Hasil prediksi memiliki risiko TINGGI terkena penyakit kardiovaskular.Probabilitas risiko: {prediction_proba * 100:.2f}%")
     else:
-        result_text = "Rendah"
-        st.success(f"Hasil Prediksi: Risiko **{result_text}**")
-        st.write("Pasien ini diprediksi memiliki risiko rendah terkena penyakit kardiovaskular.")
+        # result_text = "Rendah"
+        # st.success(f"Hasil Prediksi: Risiko **{result_text}**")
+        # st.write("Responden ini diprediksi memiliki risiko RENDAH terkena penyakit kardiovaskular.")
+        st.success(f"Hasil prediksi memiliki risiko RENDAH terkena penyakit kardiovaskular.Probabilitas risiko: {prediction_proba * 100:.2f}%")
 
-    st.info(f"Probabilitas risiko: {prediction_proba * 100:.2f}%")
+    # st.info(f"Probabilitas risiko: {prediction_proba * 100:.2f}%")
